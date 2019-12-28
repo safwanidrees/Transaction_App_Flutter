@@ -1,6 +1,10 @@
 # transaction_app
+How to run
 
-A new Flutter project.
+1-Clone this repo
+2-Run flutter packages get
+3-Run flutter run (remember open simulator or connect physical device, iOS auto run additional command pod install)
+
 
 ## Getting Started
 
