@@ -141,6 +141,54 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  List<Widget> _ScreeninPotrait(
+      MediaQueryData mediaQuery, AppBar appbar, Widget txList) {
+    return [
+      Container(
+        height: (MediaQuery.of(context).size.height -
+                appbar.preferredSize.height -
+                mediaQuery.padding.top) *
+            0.3,
+        child: Chart(_recentTransaction),
+      ),
+      txList
+    ];
+  }
+
+  List<Widget> _ScreeninLandscape(
+      MediaQueryData mediaQuery, AppBar appbar, Widget txList) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text('Show Chart', style: Theme.of(context).textTheme.title),
+          Switch.adaptive(
+            activeColor: Theme.of(context).accentColor,
+            //now _showChart is false so Switch is off
+
+            value: _showChart,
+
+            onChanged: (val) {
+              setState(() {
+                _showChart = val;
+              });
+            },
+          )
+        ],
+      ),
+      if (_showChart)
+        Container(
+          height: (MediaQuery.of(context).size.height -
+                  appbar.preferredSize.height -
+                  mediaQuery.padding.top) *
+              0.6,
+          child: Chart(_recentTransaction),
+        )
+      else
+        txList,
+    ];
+  }
+
   bool _showChart = false;
 
   @override
@@ -196,73 +244,13 @@ class _MyHomePageState extends State<MyHomePage> {
           // mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            if (isLandscape)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text('Show Chart',style:Theme.of(context).textTheme.title),
-                  Switch.adaptive(
-                    activeColor: Theme.of(context).accentColor,
-                    //now _showChart is false so Switch is off
-
-                    value: _showChart,
-
-                    onChanged: (val) {
-                      setState(() {
-                        _showChart = val;
-                      });
-                    },
-                  )
-                ],
-              ),
+            if (isLandscape) ..._ScreeninLandscape(mediaQuery, appbar, txList),
 
             //if(_showChart == true ){}
             //   else{}
 
             if (!isLandscape)
-              Container(
-                height: (MediaQuery.of(context).size.height -
-                        appbar.preferredSize.height -
-                        mediaQuery.padding.top) *
-                    0.3,
-                child: Chart(_recentTransaction),
-              ),
-            if (!isLandscape)
-              txList,
-
-            if (isLandscape)
-              if (_showChart)
-                Container(
-                  height: (MediaQuery.of(context).size.height -
-                          appbar.preferredSize.height -
-                          mediaQuery.padding.top) *
-                      0.6,
-                  child: Chart(_recentTransaction),
-                )
-              else
-                txList,
-            //       Container(
-            //       margin: EdgeInsets.only(left: 87,right:87),
-            //         child: RaisedButton(
-            //           child: Text('Hello',
-            //           ),
-            //           color: Colors.purple,
-            //           padding: EdgeInsets.all(20),
-            //           splashColor: Colors.pink,
-            //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            //  onPressed: (){},
-            //         ),
-            //       ),
-            // Container(
-            //   padding: EdgeInsets.all(10),
-            //   child: TextField(
-
-            //     decoration: InputDecoration(
-            //         hintText: ('Hellow'),
-            //         border: OutlineInputBorder(
-            //             borderRadius: BorderRadius.circular(10.0))),
-            //   ),
-            // ),
+              ..._ScreeninPotrait(mediaQuery, appbar, txList),
           ],
         ),
       ),

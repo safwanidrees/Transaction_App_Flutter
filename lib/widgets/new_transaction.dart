@@ -98,7 +98,7 @@ class _NewTransactionState extends State<NewTransaction> {
                           ? 'No Date Choose!'
                           : DateFormat.yMd().format(selectedDate)),
                     ),
-                    
+
                     //My custom button
                     AdaptiveFlatButton('Choose Date', _submitPresentDate)
                   ],
